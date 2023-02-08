@@ -1,13 +1,34 @@
 import openai
+import logging
+from aiogram.utils.emoji import emojize
+from aiogram.types.message import ContentType
+from aiogram.utils.markdown import text, bold, italic, code, pre, hbold, hunderline
+from aiogram.types import ParseMode, InputMediaPhoto, InputMediaVideo, ChatActions
+from aiogram.types import ReplyKeyboardRemove,ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.dispatcher import FSMContext
+from aiogram.dispatcher.filters.state import State, StatesGroup
+from aiogram.contrib.fsm_storage.memory import MemoryStorage
+import aiogram.utils.exceptions
+from aiogram.types.message import ContentTypes
 from aiogram import Bot, types
 from aiogram.dispatcher import Dispatcher
 from aiogram.utils import executor
-
 token = '6063808185:AAF5-TC6I0uyFP-fVcodxAi2m8SfG-cDIfQ'
 openai.api_key = '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'
 
 bot = Bot(token)
 dp = Dispatcher(bot)
+
+logging.basicConfig(filename="all_log.log", level=logging.INFO, format='%(asctime)s - %(levelname)s -%(message)s')
+warning_log = logging.getLogger("warning_log")
+warning_log.setLevel(logging.WARNING)
+
+fh = logging.FileHandler("warning_log.log")
+
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+fh.setFormatter(formatter)
+
+warning_log.addHandler(fh)
 
 @dp.message_handler()
 async def send(message : types.Message):
